@@ -1,8 +1,11 @@
 const express = require("express")
 const User = require('../models/user.js')
+const {hashPassword, comparePassword} = require("../utils/encrypt.js")
+const jwt = require("jsonwebtoken")
 
 const authRouter = express.Router();
 
+//SIGN UP ROUTE
 authRouter.post("/api/signup", async (req, res) => {
     try{
         //get data from client -> req.body
@@ -14,9 +17,11 @@ authRouter.post("/api/signup", async (req, res) => {
             return res.status(400).json({msg: "User already exists"})
         }
 
+        const pass = hashPassword(req.body.password);
+
         let user = new User({
             email,
-            password,
+            password: pass,
             name,
         })
 
@@ -29,5 +34,31 @@ authRouter.post("/api/signup", async (req, res) => {
 
     // return data to user
 })
+
+//SIGN IN ROUTE
+authRouter.post("/api/signin", async (req, res) => {
+    try {
+
+        const {email, password} = req.body;
+
+        const user = await User.findOne({email})
+        if (!user){
+            return res.status(400).json({msg: "user doesn't exist"})
+        }
+
+        const pass = comparePassword(password, user.password);
+        if (!pass){
+           return res.status(400).json({msg: "wrong credentials"})
+        }
+
+        const token = jwt.sign({id: user._id},"passwordKey")
+        res.json({token, ...user._doc})
+
+
+    }catch (e) {
+        res.status(500).json({error: e.message})
+    }
+})
+
 
 module.exports = authRouter;

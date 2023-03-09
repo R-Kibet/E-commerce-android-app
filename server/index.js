@@ -6,7 +6,7 @@ const mongoose = require("mongoose")
 const app = express();
 const PORT = 3000;
 const DB =
-"mongodb+srv://:@cluster0.sga2a48.mongodb.net/?retryWrites=true&w=majority"
+"mongodb+srv://richkibz:Babygangsta@cluster0.sga2a48.mongodb.net/?retryWrites=true&w=majority"
 
 //middleware
 app.use(express.json())
@@ -21,6 +21,6 @@ mongoose.connect(DB).then( () => {
 })
 
 
-app.listen(PORT, () => {
+app.listen(PORT, "0.0.0.0", () => {
     console.log(`connected at port  ${PORT}`);
 });
