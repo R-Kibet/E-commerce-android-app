@@ -2,6 +2,7 @@ import 'package:amazon_clone/common/widget/custom_button.dart';
 import 'package:amazon_clone/common/widget/custom_textfield.dart';
 import 'package:amazon_clone/constants/global.dart';
 import 'package:amazon_clone/enums/actions.dart';
+import 'package:amazon_clone/services/auth/auth_service.dart';
 import 'package:flutter/material.dart';
 
 class AuthScreen extends StatefulWidget {
@@ -22,12 +23,32 @@ class _AuthScreenState extends State<AuthScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
+  ///binding sign up user with ui
+  final AuthService authService = AuthService();
+
   @override
   void dispose() {
     _emailController.dispose();
     _nameController.dispose();
     _passwordController.dispose();
     super.dispose();
+  }
+
+  void signUpUser(){
+    authService.signUpUser(
+        context: context,
+        email: _emailController.text,
+        password: _passwordController.text,
+        name: _nameController.text,
+    );
+  }
+
+  void signInUser() {
+    authService.signInUser(
+      context: context,
+      email: _emailController.text,
+      password: _passwordController.text,
+    );
   }
 
   @override
@@ -97,6 +118,9 @@ class _AuthScreenState extends State<AuthScreen> {
                         CustomButton(
                             text: "Sign Up",
                             onTap: () {
+                              if (_signUpKey.currentState!.validate()){
+                                signUpUser();
+                              }
 
                             })
                       ],
@@ -129,7 +153,7 @@ class _AuthScreenState extends State<AuthScreen> {
                   padding: const EdgeInsets.all(8.0),
                   color: GlobalVariables.backgroundColor,
                   child: Form(
-                    key: _signUpKey,
+                    key: _signInKey,
                     child: Column(
                       children: [
                         CustomTextField(
@@ -147,8 +171,10 @@ class _AuthScreenState extends State<AuthScreen> {
                         CustomButton(
                             text: "Sign In",
                             onTap: () {
-
-                            })
+                              if (_signInKey.currentState!.validate()){
+                              signInUser();
+                              }
+                            }),
                       ],
 
                     ),
