@@ -1,7 +1,9 @@
 const express = require("express")
 const User = require('../models/user.js')
-const {hashPassword, comparePassword} = require("../utils/encrypt.js")
 const jwt = require("jsonwebtoken")
+
+const {hashPassword, comparePassword} = require("../utils/encrypt.js")
+const auth = require("../middleware/auth_mid.js")
 
 const authRouter = express.Router();
 
@@ -58,6 +60,31 @@ authRouter.post("/api/signin", async (req, res) => {
     }catch (e) {
         res.status(500).json({error: e.message})
     }
+})
+
+authRouter.post("/tokenIsValid", async (req, res) => {
+    try{
+        const token = req.header("x-auth-token");
+
+        if(!token) return res.json(false);
+
+        const verify = jwt.verify(token, 'passwordKey');
+
+        if(!verify) return res.json(false);
+
+        const user = await User.findById(verify.id);
+        if (!user) return res.json(false);
+        res.json(true);
+
+    } catch (e) {
+        res.status(500).json({error: e.message})
+    }
+})
+
+//get user data middleware
+authRouter.get("/", auth, async (req, res) => {
+    const user = await User.findOne(req.user);
+    res.json({ ...user._doc, token: req.token});
 })
 
 
