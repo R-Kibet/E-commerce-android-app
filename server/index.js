@@ -1,12 +1,12 @@
 const express = require("express");
 const authRouter = require('./routes/auth.js')
 const mongoose = require("mongoose")
+const DB = require("./env.js")
 
 //Initialization
 const app = express();
 const PORT = 3000;
-const DB =
-"mongodb+srv://richkibz:Babygangsta@cluster0.sga2a48.mongodb.net/?retryWrites=true&w=majority"
+
 
 //middleware
 app.use(express.json())
