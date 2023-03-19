@@ -1,5 +1,5 @@
-import 'package:amazon_clone/common/widget/custom_button.dart';
-import 'package:amazon_clone/common/widget/custom_textfield.dart';
+import 'package:amazon_clone/common/widget/custom%20/custom_button.dart';
+import 'package:amazon_clone/common/widget/custom%20/custom_textfield.dart';
 import 'package:amazon_clone/constants/global.dart';
 import 'package:amazon_clone/enums/actions.dart';
 import 'package:amazon_clone/services/auth/auth_service.dart';
