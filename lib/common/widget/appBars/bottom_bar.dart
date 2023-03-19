@@ -3,7 +3,7 @@ import 'package:amazon_clone/views/profile_screen.dart';
 import 'package:flutter/material.dart' hide Badge;
 import 'package:badges/badges.dart';
 
-import '../../views/home_screen.dart';
+import '../../../views/home_screen.dart';
 
 class BottomBar extends StatefulWidget {
   const BottomBar({Key? key}) : super(key: key);
